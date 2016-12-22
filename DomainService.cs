@@ -29,7 +29,19 @@ namespace Appointments
             return user;
         }
 
+        public IUserGroup RegisterGroup(IList<IUser> users, string groupName, string password)
+        {
+            IRegistrantGroup group = this.CreateGroup(users, groupName, password);
+            group.Register();
+            return group;
+        }
+
         private IRegistrantUser CreateUser(string name, string password)
+        {
+            IUser user = this.userFactory.CreateUser(name);
+            return this.userFactory.CreateRegistrantUser(user, password);
+        }
+        private IRegistrantUser CreateGroup(IList<IUser> users, string name, string password)
         {
             IUser user = this.userFactory.CreateUser(name);
             return this.userFactory.CreateRegistrantUser(user, password);

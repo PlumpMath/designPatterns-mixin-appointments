@@ -2,7 +2,7 @@ using System;
 
 namespace Appointments
 {
-    class RegistrantGroup : IRegistrantGroup
+    class RegistrantGroup : IRegistrantGroup, IUserGroupVisitor
     {
         private IUserGroup group;
         private string groupName;
@@ -15,6 +15,11 @@ namespace Appointments
             this.password = password;
         }
 
+        public void Accept(Func<IUserGroupVisitor> visitorFactory)
+        {
+            this.group.Accept(visitorFactory);
+        }
+
         public void AddMember(IUser user)
         {
             this.group.AddMember(user);
@@ -22,12 +27,21 @@ namespace Appointments
 
         public void ChangePassword(string newPassword)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Changing '{0}' group password from '{1}' to '{2}'.",
+                                this.groupName, this.password, newPassword);
+            this.password = newPassword;
         }
 
         public void Register()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Registering group '{0}' with password '{1}'.",
+                                this.groupName, this.password);
+            this.group.Accept(() => this);
+        }
+
+        public void VisitUser(string name)
+        {
+            Console.WriteLine("\tAssociating {0} with group '{1}'", name, this.groupName);
         }
     }
 }

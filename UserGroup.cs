@@ -7,6 +7,15 @@ namespace Appointments
     {
         private IList<IUser> members = new List<IUser>();
 
+        public void Accept(Func<IUserGroupVisitor> visitorFactory)
+        {
+            IUserVisitor visitor = visitorFactory();
+            foreach(IUser member in members)
+            {
+                member.Accept(() => visitor);
+            }
+        }
+
         public void AddMember(IUser user)
         {
             this.members.Add(user);
