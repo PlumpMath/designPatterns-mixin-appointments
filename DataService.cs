@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Appointments
 {
-    class DataService
+    class DataService : IRegistrationService
     {
-        public void RegisterUser(string name, string password)
+        public void Register(string name, string password)
         {
             Console.WriteLine(
                 "INSERT INTO User (Username, Password)\n" +

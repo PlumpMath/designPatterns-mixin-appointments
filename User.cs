@@ -9,12 +9,10 @@ namespace Appointments
     class User : IUser
     {
         private readonly string name;
-        private readonly string password;
 
-        public User(string name, string password)
+        public User(string name)
         {
             this.name = name;
-            this.password = password;
         }
 
         public IAppointment MakeAppointment(DateTime startTime)
@@ -24,7 +22,12 @@ namespace Appointments
 
         public override string ToString()
         {
-            return string.Format("User(name={0}, password={1})", this.name, this.password);
+            return string.Format("User(name={0})", this.name);
+        }
+
+        public void Accept(Func<IUserVisitor> visitorFactory)
+        {
+            visitorFactory().VisitUser(this.name);
         }
     }
 }
