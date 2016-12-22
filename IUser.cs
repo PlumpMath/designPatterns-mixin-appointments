@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Appointments
 {
-    class Program
+    interface IUser
     {
-        static void Main(string[] args)
-        {
-        }
+        IAppointment MakeAppointment(DateTime startTime);
     }
 }
