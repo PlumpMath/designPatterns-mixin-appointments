@@ -12,7 +12,8 @@ namespace Appointments
         {
             DomainService domain =
                 new DomainService(
-                    new DataService());
+                    new UserFactory(
+                        new DataService()));
 
             IUser user = domain.RegisterUser("zoranh", "magicword");
             Console.WriteLine("{0}\n", user);
