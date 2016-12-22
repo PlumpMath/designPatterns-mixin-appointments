@@ -24,7 +24,7 @@ namespace Appointments
 
         public override string ToString()
         {
-            return string.Format("User(name={0} password={1})", this.name, this.password);
+            return string.Format("User(name={0}, password={1})", this.name, this.password);
         }
     }
 }

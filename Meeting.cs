@@ -13,7 +13,14 @@ namespace Appointments
 
         public Meeting(DateTime startTime, TimeSpan duration)
         {
+            this.startTime = startTime;
+            this.duration = duration;
+        }
 
+        public override string ToString()
+        {
+            return string.Format("Meeting starting at {0}, taking {1} min.",
+                                    this.startTime, duration.Hours * 60 + duration.Minutes);
         }
     }
 }
