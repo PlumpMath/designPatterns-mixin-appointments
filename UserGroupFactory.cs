@@ -5,36 +5,26 @@ namespace Appointments
 {
     class UserGroupFactory : IUserGroupFactory
     {
-        private readonly DataService dataService;
-
-        public UserGroupFactory(DataService dataService)
+        public IRegistrantGroup CreateRegistrantUserGroup(IUserGroup userGroup, string password)
         {
-            this.dataService = dataService;
+            return new PersistableGroup(userGroup, password);
         }
 
-        public IUser CreateUser(string name)
+        public IUserGroup CreateUserGroup(string groupName)
         {
-            return new User(name);
+            return new UserGroup(groupName);
         }
 
-        public IRegistrantUser CreateRegistrantUser(IUser user, string password)
+        public IUserGroup CreateUserGroup(IList<IUser> users, string groupName)
         {
-            return new PersistableUser(user, this.dataService, password);
-        }
+            IUserGroup group = this.CreateUserGroup(groupName);
 
-        public IUserGroup CreateUserGroup(IList<IUser> users)
-        {
-            IUserGroup userGroup = new UserGroup();
-            foreach(IUser user in users)
+            foreach (IUser user in users)
             {
-                userGroup.AddMember(user);
+                group.AddMember(user);
             }
-            return userGroup;
-        }
 
-        public IRegistrantGroup CreateRegistrantUserGroup(IList<IUser> users, string groupName, string password)
-        {
-            return new RegistrantGroup()
+            return group;
         }
     }
 }

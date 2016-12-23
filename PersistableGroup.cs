@@ -1,17 +1,18 @@
 using System;
+using System.Collections.Generic;
 
 namespace Appointments
 {
-    class RegistrantGroup : IRegistrantGroup, IUserGroupVisitor
+    class PersistableGroup : IRegistrantGroup, IUserGroupVisitor
     {
         private IUserGroup group;
-        private string groupName;
         private string password;
+        private string groupName;
+        private IList<string> userNames = new List<string>();
 
-        public RegistrantGroup(IUserGroup group, string groupName, string password)
+        public PersistableGroup(IUserGroup group, string password)
         {
             this.group = group;
-            this.groupName = groupName;
             this.password = password;
         }
 
@@ -27,6 +28,7 @@ namespace Appointments
 
         public void ChangePassword(string newPassword)
         {
+            this.group.Accept(() => this);
             Console.WriteLine("Changing '{0}' group password from '{1}' to '{2}'.",
                                 this.groupName, this.password, newPassword);
             this.password = newPassword;
@@ -34,14 +36,24 @@ namespace Appointments
 
         public void Register()
         {
+            this.group.Accept(() => this);
             Console.WriteLine("Registering group '{0}' with password '{1}'.",
                                 this.groupName, this.password);
-            this.group.Accept(() => this);
+
+            foreach (string userName in this.userNames)
+            {
+                Console.WriteLine("\tAssociating {0} with group '{1}'", userName, this.groupName);
+            }
+        }
+
+        public void VisitGroup(string groupName)
+        {
+            this.groupName = groupName;
         }
 
         public void VisitUser(string name)
         {
-            Console.WriteLine("\tAssociating {0} with group '{1}'", name, this.groupName);
+            userNames.Add(name);
         }
     }
 }
