@@ -52,6 +52,13 @@ namespace Appointments
             return group;
         }
 
+        public IUserGroup ChangeGroupPassword(IUserGroup group, string password, string newPassword)
+        {
+            IRegistrantGroup registrantGroup = this.CreateGroup(group, password);
+            registrantGroup.ChangePassword(newPassword);
+            return registrantGroup;
+        }
+
         private IRegistrantUser CreateUser(string userName, string password)
         {
             IUser user = this.userFactory.CreateUser(userName);
